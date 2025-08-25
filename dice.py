@@ -61,6 +61,6 @@ class Dice:
 
     def __repr__(self) -> str:
         """
-        Representación de cadena de los dados para depuración.
+        Representación de cadena de los dados para la depuración.
         """
         return f"Dice(die1={self.die1}, die2={self.die2}, rolls_left={self.rolls_left})"
