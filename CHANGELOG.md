@@ -8,3 +8,12 @@
 
 # 25/08/25 - Representa la ficha en el juego y el color de la misma en el checker.py
 
+# 27/08/25 - El jugador que sos y el color de ficha que te toca en player.py
+
+# 28/08/25 - Reglas y movimientos del juego durante la partida en main.py
+
+# 29/08/25 - Correcciones en la clase board.py
+
+# 30/08/25 - Correcciones en la clase game.py
+
+# 31/08/25 - Correcciones en la calse dice.py
