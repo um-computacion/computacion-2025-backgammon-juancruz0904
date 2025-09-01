@@ -95,3 +95,6 @@ class BackgammonGame:
         pass
 
 if __name__ == "__main__":
+    game = BackgammonGame()
+    game.start_game()
+    game.make_move(0, 5, 5)

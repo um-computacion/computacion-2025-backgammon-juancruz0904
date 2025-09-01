@@ -17,3 +17,5 @@
 # 30/08/25 - Correcciones en la clase game.py
 
 # 31/08/25 - Correcciones en la calse dice.py
+
+# 01/08/25 - Verificacion de las funciones principales del juego en test_main.py
