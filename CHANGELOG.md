@@ -19,3 +19,7 @@
 # 31/08/25 - Correcciones en la calse dice.py
 
 # 01/08/25 - Verificacion de las funciones principales del juego en test_main.py
+
+# 05/08/25 - Verificacion de las funciones principales de los dados en el test_dice.py
+
+# 07/08/25 - Verificacion de las funciones principales de los jugadores en el test_player.py
