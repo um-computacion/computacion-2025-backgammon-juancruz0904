@@ -23,3 +23,5 @@
 # 05/08/25 - Verificacion de las funciones principales de los dados en el test_dice.py
 
 # 07/08/25 - Verificacion de las funciones principales de los jugadores en el test_player.py
+
+# 08/09/25 - Verificacion de las funciones principales de las reglas del juego en test_game.py
