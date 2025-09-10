@@ -38,6 +38,7 @@ class TestBackgammonGame(unittest.TestCase):
 
     def test_switch_turn(self):
         current = self.game.current_player
+
         self.game.switch_turn()
         self.assertNotEqual(current, self.game.current_player)
 
