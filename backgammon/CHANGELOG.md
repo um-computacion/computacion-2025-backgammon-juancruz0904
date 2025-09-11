@@ -27,3 +27,5 @@
 # 08/09/25 - Verificacion de las funciones principales de las reglas del juego en test_game.py
 
 # 09/09/25 - Correcciones de las funciones de venificacion en el test_main.py
+
+# 10/09/25 - Correcciones de las funciones de verificacion en el test_game.py

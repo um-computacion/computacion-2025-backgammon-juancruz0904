@@ -1,11 +1,10 @@
 from backgammon.core.game import BackgammonGame
 from backgammon.core.board import Board
 
-
 def display_board(board: Board):
     """
     Función para mostrar el tablero de juego en la consola.
-    Esto es una representación básica.
+    Esto es una representación muy básica, puedes mejorarla.
     """
     print("-" * 50)
     print("Tablero de Backgammon")
