@@ -29,3 +29,5 @@
 # 09/09/25 - Correcciones de las funciones de venificacion en el test_main.py
 
 # 10/09/25 - Correcciones de las funciones de verificacion en el test_game.py
+
+# 11/09/25 - Verificacion de las posiciones de las fichas y la forma del tablero en test_board.py
