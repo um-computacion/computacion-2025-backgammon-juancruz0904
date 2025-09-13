@@ -1,5 +1,5 @@
 import unittest
-from backgammon import Point, Board
+from backgammon.core.board import Point, Board
 
 class TestPoint(unittest.TestCase):
     def test_add_checker(self):
@@ -50,5 +50,5 @@ class TestBoard(unittest.TestCase):
     def test_reenter_from_empty_bar(self):
         self.assertIsNone(self.board.reenter_from_bar("white"))
 
-if __name__ == "_main_":
+if __name__ == "__main__":
     unittest.main()
