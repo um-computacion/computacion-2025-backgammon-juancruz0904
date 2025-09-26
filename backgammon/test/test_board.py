@@ -29,12 +29,12 @@ class TestBoard(unittest.TestCase):
 
     def test_initial_positions(self):
         self.assertEqual(self.board.points[1].count(), 2)
-        self.assertEqual(self.board.points[12].count(), 5)
-        self.assertEqual(self.board.points[17].count(), 3)
-        self.assertEqual(self.board.points[19].count(), 5)
         self.assertEqual(self.board.points[6].count(), 5)
         self.assertEqual(self.board.points[8].count(), 3)
+        self.assertEqual(self.board.points[12].count(), 5)
         self.assertEqual(self.board.points[13].count(), 5)
+        self.assertEqual(self.board.points[17].count(), 3)
+        self.assertEqual(self.board.points[19].count(), 5)
         self.assertEqual(self.board.points[24].count(), 2)
 
     def test_send_to_bar(self):

@@ -39,3 +39,5 @@
 # 14/09/25 - Verificacion de las funciones de representaacion de una ficha en el juego y su color correspondiente en el test_checker.py
 
 # 15/09/25 - Correcciones de las funciones de verificacion en el test_player.py
+
+# 25/09/25 - Correcciones de las posiciones de las fichas en board.py y test_board.py
