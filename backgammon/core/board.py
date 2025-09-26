@@ -27,18 +27,18 @@ class Board:
     def setup_initial_positions(self):
         # 2 fichas blancas en el punto 1
         self.points[1].checkers.extend(["white"] * 2)
-        # 5 fichas negras en el punto 12
-        self.points[12].checkers.extend(["black"] * 5)
-        # 3 fichas negras en el punto 17
-        self.points[17].checkers.extend(["black"] * 3)
-        # 5 fichas blancas en el punto 19
-        self.points[19].checkers.extend(["white"] * 5)
-        # 5 fichas blancas en el punto 6
-        self.points[6].checkers.extend(["white"] * 5)
-        # 3 fichas blancas en el punto 8
-        self.points[8].checkers.extend(["white"] * 3)
+        # 5 fichas negras en el punto 6
+        self.points[6].checkers.extend(["black"] * 5)
+        # 3 fichas negras en el punto 8
+        self.points[8].checkers.extend(["black"] * 3)
+        # 5 fichas blancas en el punto 12
+        self.points[12].checkers.extend(["white"] * 5)
         # 5 fichas negras en el punto 13
         self.points[13].checkers.extend(["black"] * 5)
+        # 3 fichas blancas en el punto 17
+        self.points[17].checkers.extend(["white"] * 3)
+        # 5 fichas blancas en el punto 19
+        self.points[19].checkers.extend(["white"] * 5)
         # 2 fichas negras en el punto 24
         self.points[24].checkers.extend(["black"] * 2)
 

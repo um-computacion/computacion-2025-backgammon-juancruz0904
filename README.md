@@ -28,3 +28,6 @@ El proyecto se divide en varis clases y cada una controla una parte del juego Ba
 - dice.py: Simula el lanzamiento de los dados y gestiona los movimientos disponibles.
 - player.py: Representa a los jugadores, con su nombre y color de fichas.
 - checker.py: Representa una ficha individual.
+
+# cd ~/Documentos/computacion-2025-backgammon-juancruz0904
+# python3 -m backgammon.cli.main
