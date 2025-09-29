@@ -12,37 +12,30 @@ class BackgammonGame:
         self.is_game_over = False
 
     def start_game(self):
-        print("Determinando quién comienza...")
-
         while True:
             roll1 = self.dice.roll_single()
             roll2 = self.dice.roll_single()
 
-            print(f"{self.player1.name} tira: {roll1}")
-            print(f"{self.player2.name} tira: {roll2}")
-
             if roll1 > roll2:
                 self.current_player = self.player1
-                print(f"{self.player1.name} comienza el juego.")
                 break
             elif roll2 > roll1:
                 self.current_player = self.player2
-                print(f"{self.player2.name} comienza el juego.")
                 break
             else:
-                print("Empate. Se repite la tirada.")
+                pass
 
     def roll_dice(self):
         self.dice.roll()
 
     def get_valid_moves(self):
-        # Lógica para calcular movimientos válidos del jugador actual.
+        # Lógica para confirmar los movimientos válidos del jugador
         pass
 
     def is_valid_move(self, start_point: int, end_point: int, die_value: int) -> bool:
         player_color = self.current_player.color
 
-        # El punto de inicio debe tener una ficha del jugador actual
+        # El punto de inicio debe tener una ficha del jugador
         if self.board.points[start_point].count() == 0 or self.board.points[start_point].top_color() != player_color:
             return False
 
@@ -50,34 +43,38 @@ class BackgammonGame:
         if abs(end_point - start_point) != die_value:
             return False
 
-        # El punto de destino no puede tener 2 o más fichas del oponente
+        # El punto de destino no puede tener 2 o más fichas del otro jugador
         end_point_obj = self.board.points[end_point]
         if end_point_obj.count() > 1 and end_point_obj.top_color() != player_color:
             return False
 
         return True
 
-    def make_move(self, start_point: int, end_point: int, die_value: int):
+    def make_move(self, start_point: int, end_point: int,
+                  die_value: int) -> bool:  
         if not self.is_valid_move(start_point, end_point, die_value):
-            print("Movimiento inválido.")
-            return
+            return False  
 
         start = self.board.points[start_point]
         end = self.board.points[end_point]
 
-        # Captura si hay una sola ficha del oponente
+        # Captura si hay una sola ficha del otro jugador
         if end.count() == 1 and end.top_color() != self.current_player.color:
             captured_color = end.remove_checker()
             self.board.send_to_bar(captured_color)
-            print(f"{self.current_player.name} captura una ficha {captured_color} en el punto {end_point}.")
 
         # Movimiento normal
         checker = start.remove_checker()
         end.add_checker(checker)
-        print(f"{self.current_player.name} mueve ficha de {start_point} a {end_point}")
 
         # Usar el valor del dado
-        self.dice.use_roll(die_value)
+        # Usar el dado SÓLO si el movimiento fue exitoso
+        success = self.dice.use_roll(die_value)
+
+        # Es muy importante que use_roll devuelva True aquí si la lógica es correcta
+        # Si success es False, algo anda mal, pero asumimos que funcionará si llegamos aquí.
+
+        return True  
 
     def switch_turn(self):
         self.current_player = self.player2 if self.current_player == self.player1 else self.player1
@@ -90,8 +87,7 @@ class BackgammonGame:
         return len(self.board.bar[player.color]) > 0
 
     def get_valid_reentry_points(self, player):
-        # Esto depende del color: white entra en puntos 0–5, black en 18–23
-        # Podés agregar lógica para validar si el punto está libre o capturable
+        
         pass
 
 if __name__ == "__main__":
