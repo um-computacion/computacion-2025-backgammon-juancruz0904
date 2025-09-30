@@ -43,3 +43,5 @@
 # 25/09/25 - Correcciones de las posiciones de las fichas en board.py y test_board.py
 
 # 28/09/25 - Correcciones de las funciones principales de las reglas del juego en game.py
+
+# 29/09/25 - Correcciones de las funciones de verificacion de las reglas del juego en test_game.py
