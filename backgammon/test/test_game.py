@@ -18,7 +18,7 @@ class TestBackgammonGame(unittest.TestCase):
 
     @patch.object(Board, 'setup_initial_positions')
     def test_initialization(self, mock_setup):
-        """Verifica que el juego se inicialice correctamente."""
+        """Verifica que el juego se inicie correctamente."""
         self.assertIsInstance(self.game.board, Board)
         self.assertEqual(self.game.player1.name, "Blanco")
         self.assertEqual(self.game.player2.color, "black")
@@ -102,7 +102,7 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(self.game.dice.rolls_left, 1) 
 
     def test_make_move_with_capture(self):
-        """Prueba un movimiento de captura que envía la ficha del oponente a la barra."""
+        """Prueba un movimiento de captura que envía la ficha del otro jugador a la barra."""
         self.setup_move_state(self.black_player, die1=4, die2=0)  
 
         while self.game.board.points[20].count() > 0:
