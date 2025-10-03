@@ -45,3 +45,7 @@
 # 28/09/25 - Correcciones de las funciones principales de las reglas del juego en game.py
 
 # 29/09/25 - Correcciones de las funciones de verificacion de las reglas del juego en test_game.py
+
+# 02/10/25 - Correcciones de las funciones de verificacion principales del test_mine.py
+
+# 03/10/25 - Correcciones de las funciones de verificacion de los jugadores del test_player.py
