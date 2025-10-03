@@ -21,7 +21,6 @@ def display_board(board: Board):
         print(f"Punto {i:2d}: {board.points[i].count():2d} fichas ({board.points[i].top_color() or 'vacío'})")
     print("-" * 50)
 
-
 def main():
     """
     Función principal para el modo de línea de comandos.
