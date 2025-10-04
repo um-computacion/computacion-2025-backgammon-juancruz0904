@@ -2,15 +2,14 @@ import unittest
 from backgammon.core.dice import Dice
 
 class TestDice(unittest.TestCase):
-
     def setUp(self):
         self.dice = Dice()
 
     def test_roll_dice_values_in_range(self):
         for _ in range(100):
             self.dice.roll_dice()
-            self.assertIn(self.dice.die1, range(1, 7))
-            self.assertIn(self.dice.die2, range(1, 7))
+            self.assertIn(self.dice.die1, range(1, 6))
+            self.assertIn(self.dice.die2, range(1, 6))
             self.assertIn(self.dice.rolls_left, [2, 4])
 
     def test_roll_single_value_in_range(self):
@@ -21,8 +20,8 @@ class TestDice(unittest.TestCase):
     def test_roll_method_allows_out_of_range(self):
         for _ in range(100):
             die1, die2 = self.dice.roll()
-            self.assertIn(die1, range(1, 13))
-            self.assertIn(die2, range(1, 13))
+            self.assertIn(die1, range(1, 7))
+            self.assertIn(die2, range(1, 7))
             self.assertIn(self.dice.rolls_left, [2, 4])
 
     def test_get_values_for_doubles(self):
