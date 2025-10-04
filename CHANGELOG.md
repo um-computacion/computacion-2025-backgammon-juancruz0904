@@ -49,3 +49,5 @@
 # 02/10/25 - Correcciones de las funciones de verificacion principales del test_mine.py
 
 # 03/10/25 - Correcciones de las funciones de verificacion de los jugadores del test_player.py
+
+# 04/10/25 - Correcciones de las funciones del uso de los dados del juego en dice.py
