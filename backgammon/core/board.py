@@ -25,23 +25,14 @@ class Board:
         self.setup_initial_positions()
 
     def setup_initial_positions(self):
-
         # Posisiones de las fichas en el tablero
-        
         self.points[1].checkers.extend(["white"] * 2)
-
         self.points[6].checkers.extend(["black"] * 5)
-
         self.points[8].checkers.extend(["black"] * 3)
-
         self.points[12].checkers.extend(["white"] * 5)
-
         self.points[13].checkers.extend(["black"] * 5)
-
         self.points[17].checkers.extend(["white"] * 3)
-
         self.points[19].checkers.extend(["white"] * 5)
-
         self.points[24].checkers.extend(["black"] * 2)
 
     def send_to_bar(self, color):

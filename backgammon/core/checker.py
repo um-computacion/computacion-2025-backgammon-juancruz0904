@@ -6,7 +6,7 @@ class Checker:
         """
         Inicia una nueva ficha con un color.
 
-        Args:
+        Argumentos:
             color (str): El color de la ficha, 'white' o 'black'.
         """
         if color not in ['white', 'black']:

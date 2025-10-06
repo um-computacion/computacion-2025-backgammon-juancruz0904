@@ -5,7 +5,6 @@ from backgammon.core.game import BackgammonGame
 from backgammon.core.board import Board
 
 class TestBackgammonGame(unittest.TestCase):
-
     def setUp(self):
         """Prepara un juego limpio antes de cada prueba."""
         self.game = BackgammonGame(player1_name="Blanco", player2_name="Negro")
@@ -60,7 +59,6 @@ class TestBackgammonGame(unittest.TestCase):
 
     def test_is_valid_move_normal_move(self):
         """Prueba un movimiento válido para el jugador actual (Blanco, P6 -> P11, dado 5)."""
- 
         self.game.current_player = self.white_player
 
         is_valid = self.game.is_valid_move(start_point=6, end_point=11, die_value=5)
@@ -134,9 +132,7 @@ class TestBackgammonGame(unittest.TestCase):
         success = self.game.make_move(start_point=1, end_point=19, die_value=1)
 
         self.assertFalse(success)
-        
         self.assertEqual(self.game.board.points[1].count(), initial_count_start)
-        
         self.assertEqual(self.game.dice.rolls_left, initial_rolls_left)
 
 

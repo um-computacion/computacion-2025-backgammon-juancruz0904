@@ -2,7 +2,6 @@ import unittest
 from backgammon.core.player import Player
 
 class TestPlayer(unittest.TestCase):
-
     def test_valid_player_creation_white(self):
         player = Player(name="Alice", color="white")
         self.assertEqual(player.name, "Alice")

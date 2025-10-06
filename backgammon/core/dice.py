@@ -2,7 +2,7 @@ import random
 
 class Dice:
     def __init__(self):
-        """ Ahora Inicializamos los dados. """
+        """ Ahora Iniciamos el lanzamiento los dados. """
         self.die1 = 0
         self.die2 = 0
         self.rolls_left = 0
