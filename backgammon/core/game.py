@@ -29,7 +29,6 @@ class BackgammonGame:
         self.dice.roll()
 
     def get_valid_moves(self):
-
         pass
 
     def is_valid_move(self, start_point: int, end_point: int, die_value: int) -> bool:
@@ -64,21 +63,18 @@ class BackgammonGame:
         end.add_checker(checker)
 
         success = self.dice.use_roll(die_value)
-
         return True  
 
     def switch_turn(self):
         self.current_player = self.player2 if self.current_player == self.player1 else self.player1
 
     def check_winner(self):
-
         pass
 
     def has_checker_on_bar(self, player):
         return len(self.board.bar[player.color]) > 0
 
     def get_valid_reentry_points(self, player):
-        
         pass
 
 if __name__ == "__main__":
