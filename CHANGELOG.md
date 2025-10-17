@@ -51,3 +51,7 @@
 # 03/10/25 - Correcciones de las funciones de verificacion de los jugadores del test_player.py
 
 # 04/10/25 - Correcciones de las funciones del uso de los dados del juego en dice.py
+
+# 06/10/25 - Correcciones de las funciones del jugador en el player.py
+
+# 16/10/25 - Correcciones de la forma del tablero del backgammon en main.py
