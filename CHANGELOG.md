@@ -55,3 +55,5 @@
 # 06/10/25 - Correcciones de las funciones del jugador en el player.py
 
 # 16/10/25 - Correcciones de la forma del tablero del backgammon en main.py
+
+# 18/10/25 - Correcciones de la imagen del tablero del backgammon en main.py

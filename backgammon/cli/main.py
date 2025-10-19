@@ -39,8 +39,8 @@ def display_board(board: Board):
     B_BAR = len(board.bar["black"])
 
     print("\n" + "=" * 67)
-    print("      13 14 15 16 17 18   |BAR|   19 20 21 22 23 24")
-    print("      -----------------   ---   -----------------")
+    print("      13 14 15 16 17 18 |BAR| 19 20 21 22 23 24")
+    print("      -----------------  ---  -----------------")
 
     for row in range(MAX_FICHAS_DISPLAY):
         line = "      "
@@ -82,8 +82,8 @@ def display_board(board: Board):
 
         print(line)
 
-    print("      -----------------   ---   -----------------")
-    print("      12 11 10 09 08 07   |BAR|   06 05 04 03 02 01")
+    print("      -----------------  ---  -----------------")
+    print("      12 11 10 09 08 07 |BAR| 06 05 04 03 02 01")
     print("=" * 67)
 
 
