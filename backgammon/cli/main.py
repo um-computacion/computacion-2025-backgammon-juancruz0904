@@ -59,10 +59,10 @@ def display_board(board: Board):
 
         print(line)
 
-    print("    |=================|===|=================|")
+    print("      |=================|===|=================|")
     print(
-        f"    |  Fichas Off: N:{len(board.off_board['black']):2d} |   | Fichas Off: B:{len(board.off_board['white']):2d} |")
-    print("    |=================|===|=================|")
+        f"     | Fichas Off: N:{len(board.off_board['black']):2d} |   | Fichas Off: B:{len(board.off_board['white']):2d} |")
+    print("      |=================|===|=================|")
 
     for row in range(MAX_FICHAS_DISPLAY - 1, -1, -1):
         line = "      "

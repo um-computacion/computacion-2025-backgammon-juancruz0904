@@ -1,7 +1,7 @@
 #cli_pygame.py
 import sys
 import pygame
-from core.game import BackgammonGame
+from backgammon.core.game import BackgammonGame
 
 WIDTH, HEIGHT = 1000, 700
 MARGIN_X, MARGIN_Y = 40, 40
