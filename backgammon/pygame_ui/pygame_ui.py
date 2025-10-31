@@ -1,7 +1,7 @@
-#cli_pygame.py
+# pygame_ui.py
 import sys
 import pygame
-from backgammon.core.game import BackgammonGame
+from ..core.game import BackgammonGame
 
 WIDTH, HEIGHT = 1000, 700
 MARGIN_X, MARGIN_Y = 40, 40
@@ -13,14 +13,44 @@ LINE = (60, 60, 60)
 WHITE = (245, 245, 245)
 BLACK = (30, 30, 30)
 TEXT = (25, 25, 25)
+STATE_ROLL = 0
+STATE_SELECT_START = 1
+STATE_SELECT_END = 2
+STATE_END_TURN = 3
 
 MAX_VISIBLE_STACK = 5
+
+
+def render_ui_elements(surface, game, font):
+    """Renderiza dados, mensajes, y botón de 'Terminar Turno'."""
+
+    dice_values = game.dice.get_values()
+    dice_x = WIDTH // 2 - 100
+    dice_y = MARGIN_Y + 10  
+
+    txt_turn = font.render(f"Turno de: {game.current_player.name} ({game.current_player.color.upper()})", True, TEXT)
+    surface.blit(txt_turn, (dice_x - 100, dice_y))
+
+    for i, die_val in enumerate(dice_values):
+        rect = pygame.Rect(dice_x + i * 50, dice_y + 30, 40, 40)
+        pygame.draw.rect(surface, LINE, rect, 1)
+        txt = font.render(str(die_val), True, TEXT)
+        surface.blit(txt, txt.get_rect(center=rect.center))
+
+    end_turn_rect = pygame.Rect(WIDTH - MARGIN_X - 150, MARGIN_Y, 150, 40)
+    pygame.draw.rect(surface, (200, 50, 50), end_turn_rect, border_radius=5)
+    txt_end = font.render("TERMINAR TURNO", True, WHITE)
+    surface.blit(txt_end, txt_end.get_rect(center=end_turn_rect.center))
+
+    return end_turn_rect
+
 
 def point_index_to_display(idx):
     if 0 <= idx <= 11:
         return 'top', 11 - idx
     else:
         return 'bottom', idx - 12
+
 
 def draw_triangle(surface, board_rect, col_vis, row, color):
     x0 = board_rect.left + col_vis * (board_rect.width / 12.0)
@@ -35,13 +65,16 @@ def draw_triangle(surface, board_rect, col_vis, row, color):
         pts = [(x0, board_rect.bottom), (x1, board_rect.bottom), (x_mid, tip_y)]
     pygame.draw.polygon(surface, color, pts)
 
+
 def draw_checker(surface, center, radius, color_rgb, label=None, font=None):
     pygame.draw.circle(surface, color_rgb, center, radius)
     pygame.draw.circle(surface, LINE, center, radius, 1)
     if label and font:
-        txt = font.render(str(label), True, LINE if color_rgb == WHITE else WHITE)
+        txt_color = LINE if color_rgb == WHITE else WHITE
+        txt = font.render(str(label), True, txt_color)
         rect = txt.get_rect(center=center)
         surface.blit(txt, rect)
+
 
 def render_board(surface, game, font):
     surface.fill(BG_COLOR)
@@ -92,6 +125,7 @@ def render_board(surface, game, font):
         color_name, count = cell
         row, col_vis = point_index_to_display(idx)
         cx = int(board_rect.left + col_vis * tri_w + tri_w / 2)
+        color_rgb = WHITE if color_name == 'white' else BLACK
 
         if row == 'top':
             start_y = int(board_rect.top + radius + 6)
@@ -99,8 +133,8 @@ def render_board(surface, game, font):
             extras = max(0, count - (MAX_VISIBLE_STACK - 1)) if count > MAX_VISIBLE_STACK else 0
             for i in range(visibles):
                 cy = start_y + i * step
-                label = extras if (extras and i == visibles - 1) else None
-                draw_checker(surface, (cx, cy), radius, WHITE if color_name == 'white' else BLACK, label, font)
+                label = extras if (extras and i == visibles - 1) else None  
+                draw_checker(surface, (cx, cy), radius, color_rgb, label, font)
                 hitmap[idx].append((cx, cy, radius))
         else:
             start_y = int(board_rect.bottom - radius - 6)
@@ -108,18 +142,57 @@ def render_board(surface, game, font):
             extras = max(0, count - (MAX_VISIBLE_STACK - 1)) if count > MAX_VISIBLE_STACK else 0
             for i in range(visibles):
                 cy = start_y - i * step
-                label = extras if (extras and i == visibles - 1) else None
-                draw_checker(surface, (cx, cy), radius, WHITE if color_name == 'white' else BLACK, label, font)
+                label = extras if (extras and i == visibles - 1) else None 
+                draw_checker(surface, (cx, cy), radius, color_rgb, label, font)
                 hitmap[idx].append((cx, cy, radius))
+
+    bar_x = board_rect.centerx
+
+    black_bar_count = len(game.board.bar.get('black', []))
+    bar_y_start_top = board_rect.top + radius + 6
+    for i in range(min(black_bar_count, MAX_VISIBLE_STACK)):
+        cy = bar_y_start_top + i * step
+        label = max(0, black_bar_count - (
+                    MAX_VISIBLE_STACK - 1)) if black_bar_count > MAX_VISIBLE_STACK and i == visibles - 1 else None
+        draw_checker(surface, (bar_x, cy), radius, BLACK, label, font)
+
+    white_bar_count = len(game.board.bar.get('white', []))
+    bar_y_start_bottom = board_rect.bottom - radius - 6
+    for i in range(min(white_bar_count, MAX_VISIBLE_STACK)):
+        cy = bar_y_start_bottom - i * step
+        label = max(0, white_bar_count - (
+                    MAX_VISIBLE_STACK - 1)) if white_bar_count > MAX_VISIBLE_STACK and i == visibles - 1 else None
+        draw_checker(surface, (bar_x, cy), radius, WHITE, label, font)
+
+    off_w = 120
+    off_h = 30
+    off_x_right = board_rect.right + 10 
+
+    off_b_count = len(game.board.off_board.get('black', []))
+    off_b_rect = pygame.Rect(off_x_right, board_rect.top, off_w, off_h)
+    pygame.draw.rect(surface, LINE, off_b_rect, 1, border_radius=4)
+    txt_b = font.render(f"Black Off: {off_b_count:2d}", True, TEXT)
+    rect_b = txt_b.get_rect(center=off_b_rect.center)
+    surface.blit(txt_b, rect_b)
+
+    off_w_count = len(game.board.off_board.get('white', []))
+    off_w_rect = pygame.Rect(off_x_right, board_rect.bottom - off_h, off_w, off_h)
+    pygame.draw.rect(surface, LINE, off_w_rect, 1, border_radius=4)
+    txt_w = font.render(f"White Off: {off_w_count:2d}", True, TEXT)
+    rect_w = txt_w.get_rect(center=off_w_rect.center)
+    surface.blit(txt_w, rect_w)
 
     return hitmap
 
 def hit_test(hitmap, pos):
+    """
+    Detecta si el clic del ratón impactó en una ficha de una punta.
+    """
     mx, my = pos
     for idx, circles in hitmap.items():
         for (cx, cy, r) in circles:
             dx, dy = mx - cx, my - cy
-            if dx*dx + dy*dy <= r*r:
+            if dx * dx + dy * dy <= r * r:
                 return idx
     return None
 
@@ -130,11 +203,82 @@ def main():
     clock = pygame.time.Clock()
     font = pygame.font.SysFont(None, 20)
 
-    game = BackgammonGame()
-    game.board.pos[0] = ('white', 3)
-    game.board.pos[11] = ('black', 6)
-    game.board.pos[12] = ('white', 5)
-    game.board.pos[23] = ('black', 8)
+    game = BackgammonGame("Player1", "Player2")
+    game.start_game()
+
+    game_state = STATE_ROLL
+    selected_start_point = None  
+
+    running = True
+    while running:
+        hitmap = render_board(screen, game, font)
+        end_turn_rect = render_ui_elements(screen, game, font)
+
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                running = False
+            elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
+                mouse_pos = e.pos
+
+                if game_state == STATE_ROLL:
+                    game.roll_dice()
+                    game_state = STATE_SELECT_START
+                    print(f"Dados lanzados: {game.dice.get_values()}")
+
+                elif game_state == STATE_SELECT_START or game_state == STATE_SELECT_END:
+                    if end_turn_rect.collidepoint(mouse_pos):
+                        game_state = STATE_END_TURN
+                        print("Turno terminado manualmente.")
+                        break
+
+                    idx = hit_test(hitmap, mouse_pos)
+                    point_number = idx + 1 if idx is not None else None
+
+                    if point_number is not None:
+                        if game_state == STATE_SELECT_START:
+                            if game.board.points[point_number].top_color() == game.current_player.color:
+                                selected_start_point = point_number
+                                game_state = STATE_SELECT_END
+                                print(f"Punto de inicio seleccionado: {selected_start_point}")
+                            else:
+                                print("Seleccione una ficha de su color.")
+
+                        elif game_state == STATE_SELECT_END:
+                            end_point = point_number
+                            die_used = 0
+
+                            for die_val in game.dice.get_values():
+                                expected_end = selected_start_point + die_val if game.current_player.color == "white" else selected_start_point - die_val
+
+                                if expected_end == end_point and game.is_valid_move(selected_start_point, end_point,
+                                                                                    die_val):
+                                    die_used = die_val
+                                    break
+
+                            if die_used > 0:
+                                move_successful = game.make_move(selected_start_point, end_point, die_used)
+                                if move_successful:
+                                    print(f"✅ Movimiento: {selected_start_point} -> {end_point} (usando {die_used})")
+                                    selected_start_point = None 
+                                    if game.dice.rolls_left == 0:
+                                        game_state = STATE_END_TURN
+                                    else:
+                                        game_state = STATE_SELECT_START 
+                                else:
+                                    print("❌ Movimiento inválido.")
+                            else:
+                                print("❌ Movimiento inválido o el dado no coincide.")
+
+                            selected_start_point = None
+                            game_state = STATE_SELECT_START 
+
+        if game_state == STATE_END_TURN:
+            game.switch_turn()
+            game_state = STATE_ROLL
+            print(f"\n--- CAMBIO DE TURNO --- Ahora juega {game.current_player.name}")
+
+        pygame.display.flip()
+        clock.tick(60)
 
     hitmap = {}
 
@@ -148,7 +292,7 @@ def main():
             elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
                 idx = hit_test(hitmap, e.pos)
                 if idx is not None:
-                    print(idx)
+                    print(f"Click en la punta: {idx + 1}")
 
         hitmap = render_board(screen, game, font)
 

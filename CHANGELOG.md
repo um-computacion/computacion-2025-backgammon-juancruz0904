@@ -57,3 +57,7 @@
 # 16/10/25 - Correcciones de la forma del tablero del backgammon en main.py
 
 # 18/10/25 - Correcciones de la imagen del tablero del backgammon en main.py
+
+# 21/10/25 - Representacion grafica del backgammon en el pygame_ui.py
+
+# 25/10/25 - Correcciones de las funciones del pygame_ui.py
