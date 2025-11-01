@@ -61,3 +61,7 @@
 # 21/10/25 - Representacion grafica del backgammon en el pygame_ui.py
 
 # 25/10/25 - Correcciones de las funciones del pygame_ui.py
+
+# 30/10/25 - Correcciones de las funciones del game.py, board.py y pygame_ui.py
+
+# 31/10/25 - Correcciones de las funciones del game.py, board.py, dice.py y pygame_ui.py
