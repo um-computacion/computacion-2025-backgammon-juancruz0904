@@ -1,9 +1,8 @@
-from .checker import Checker
+from .checker import Checker 
 
 class Point:
     def __init__(self):
-        self.bar = None
-        self.checkers = []
+        self.checkers = [] 
 
     def add_checker(self, color):
         self.checkers.append(color)
@@ -17,30 +16,11 @@ class Point:
     def count(self):
         return len(self.checkers)
 
-    def send_to_bar(self, color):
-        self.bar[color].append(color)
-
-    def reenter_from_bar(self, color):
-        if self.bar[color]:
-            return self.bar[color].pop()
-
-    @property
-    def pos(self):
-        """Retorna una lista de 24 elementos (0-23) para la UI gráfica."""
-        board_state = [None] * 24
-
-        for point_number, point in self.points.items():
-            if point.count() > 0:
-                
-                idx = point_number - 1
-                board_state[idx] = (point.top_color(), point.count())
-        return board_state
-
 class Board:
     def __init__(self):
         self.points = {i: Point() for i in range(1, 25)}
-        self.bar = {"white": [], "black": []}
-        self.off_board = {"white": [], "black": []}
+        self.bar = {"white": [], "black": []} 
+        self.off_board = {"white": [], "black": []} 
         self.setup_initial_positions()
 
     def setup_initial_positions(self):
@@ -54,19 +34,27 @@ class Board:
         self.points[24].checkers.extend(["black"] * 2)
 
     def send_to_bar(self, color):
+        """Mueve una ficha a la barra."""
         self.bar[color].append(color)
 
-    def reenter_from_bar(self, color):
-        if self.bar[color]:
-            return self.bar[color].pop()
-        return None
-
-    def send_to_bar(self, color):
-        self.bar[color].append(color)
-
-    def reenter_from_bar(self, color):
-        if self.bar[color]:
-            return self.bar[color].pop()
+    def count_checkers_outside_home(self, color: str) -> int:
+        """Cuenta el total de fichas que no están en el cuadrante de casa ni fuera del tablero."""
+        count = 0
+        
+        count += len(self.bar.get(color, []))
+        
+        if color == 'white':
+            for point_num in range(1, 19):
+                point = self.points[point_num]
+                if point.count() > 0 and point.top_color() == 'white':
+                    count += point.count()
+        else:
+            for point_num in range(7, 25):
+                point = self.points[point_num]
+                if point.count() > 0 and point.top_color() == 'black':
+                    count += point.count()
+                    
+        return count
 
     @property
     def pos(self):
@@ -75,7 +63,6 @@ class Board:
 
         for point_number, point in self.points.items():
             if point.count() > 0:
-
                 idx = point_number - 1
                 board_state[idx] = (point.top_color(), point.count())
         return board_state

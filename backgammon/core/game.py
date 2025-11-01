@@ -15,7 +15,6 @@ class BackgammonGame:
         while True:
             roll1 = self.dice.roll_single()
             roll2 = self.dice.roll_single()
-
             if roll1 > roll2:
                 self.current_player = self.player1
                 break
@@ -28,179 +27,155 @@ class BackgammonGame:
     def roll_dice(self):
         self.dice.roll_dice()
 
-    def get_valid_moves(self):
-        pass
-
-        def is_valid_move(self, start_point: int, end_point: int, die_value: int) -> bool:
-            player_color = self.current_player.color
-
-            if self.has_checker_on_bar(self.current_player):
-                is_bar_move = (start_point == 0 and player_color == "white") or \
-                              (start_point == 25 and player_color == "black")
-
-                if not is_bar_move:
-                    return False
-
-                if player_color == "white":
-                    reentry_point = 0 + die_value
-                else:
-                    reentry_point = 25 - die_value
-
-                if reentry_point != end_point:
-                    return False 
-
-                if end_point < 1 or end_point > 24:
-                    return False 
-
-                end_point_obj = self.board.points[end_point]
-                if end_point_obj.count() >= 2 and end_point_obj.top_color() != player_color:
-                    return False
-
-                return True  
-
-            if start_point < 1 or start_point > 24:
-                return False 
-
-            if self.board.points[start_point].count() == 0 or self.board.points[
-                start_point].top_color() != player_color:
-                return False
-
-            expected_end_point = start_point + die_value if player_color == "white" else start_point - die_value
-
-            if (end_point == 25 and player_color == "white") or (end_point == 0 and player_color == "black"):
-                if not self.all_checkers_in_home_board(self.current_player):
-                    return False  
-
-                if expected_end_point == end_point:
-                    return True
-
-                if player_color == "white" and expected_end_point > end_point: 
-                    if self.is_max_rear_checker(start_point, player_color):
-                        return True
-
-                if player_color == "black" and expected_end_point < end_point:
-                    if self.is_max_rear_checker(start_point, player_color):
-                        return True
-
-                return False
-
-            if expected_end_point != end_point:
-                return False 
-
-            if end_point < 1 or end_point > 24:
-                return False
-
-            end_point_obj = self.board.points[end_point]
-            if end_point_obj.count() > 1 and end_point_obj.top_color() != player_color:
-                return False
-
-            return True
-
-        def make_move(self, start_point: int, end_point: int, die_value: int) -> bool:
-            player_color = self.current_player.color
-
-            if not self.is_valid_move(start_point, end_point, die_value):
-                return False
-
-            checker = None
-            if (start_point == 0 and player_color == "white") or (start_point == 25 and player_color == "black"):
-                checker = self.board.reenter_from_bar(player_color)
-            else:
-                start = self.board.points[start_point]
-                checker = start.remove_checker()
-
-            if checker is None:
-                return False  
-
-            if (end_point == 25 and player_color == "white") or (end_point == 0 and player_color == "black"):
-                self.board.off_board[player_color].append(checker)
-            else:
-                end = self.board.points[end_point]
-
-                if end.count() == 1 and end.top_color() != player_color:
-                    captured_color = end.remove_checker() 
-                    self.board.send_to_bar(captured_color) 
-
-                end.add_checker(player_color) 
-
-            success = self.dice.use_roll(die_value)
-
-            if len(self.board.off_board[player_color]) == 15:
-                self.is_game_over = True
-                print(f"🎉 ¡{self.current_player.name} ha ganado!")
-
-            return True
-
-        def has_checker_on_bar(self, player) -> bool:
-            return len(self.board.bar[player.color]) > 0
-
-        def all_checkers_in_home_board(self, player) -> bool:
-            color = player.color
-
-            if len(self.board.bar[color]) > 0:
-                return False
-
-            if color == "white":
-                for i in range(1, 19):
-                    if self.board.points[i].top_color() == color:
-                        return False
-
-            else:  
-                for i in range(7, 25):
-                    if self.board.points[i].top_color() == color:
-                        return False
-            return True
-
-        def is_max_rear_checker(self, point: int, color: str) -> bool:
-            """Verifica si el punto es el más lejano (más a la izquierda o más a la derecha)
-               para el movimiento de retirada, lo que permite el overshooting."""
-
-            if color == "white":
-                for i in range(19, point):
-                    if self.board.points[i].top_color() == color and self.board.points[i].count() > 0:
-                        return False  
-                return True 
-
-            else: 
-                for i in range(point + 1, 7):
-                    if self.board.points[i].top_color() == color and self.board.points[i].count() > 0:
-                        return False  
-                return True 
-
-        def roll_dice(self):
-            self.dice.roll_dice()  
-
-    def make_move(self, start_point: int, end_point: int,
-                  die_value: int) -> bool:  
-        if not self.is_valid_move(start_point, end_point, die_value):
-            return False  
-
-        start = self.board.points[start_point]
-        end = self.board.points[end_point]
-
-        if end.count() == 1 and end.top_color() != self.current_player.color:
-            captured_color = end.remove_checker()
-            self.board.send_to_bar(captured_color)
-
-        checker = start.remove_checker()
-        end.add_checker(checker)
-
-        success = self.dice.use_roll(die_value)
-        return True  
-
     def switch_turn(self):
         self.current_player = self.player2 if self.current_player == self.player1 else self.player1
 
-    def check_winner(self):
-        pass
+    def board_has_captured_checkers(self, color: str) -> bool:
+        return len(self.board.bar.get(color, [])) > 0
 
-    def has_checker_on_bar(self, player):
-        return len(self.board.bar[player.color]) > 0
+    def is_valid_reentry(self, player_color: str, end_point: int) -> bool:
+        if not (1 <= end_point <= 24):
+            return False
 
-    def get_valid_reentry_points(self, player):
-        pass
+        end_point_obj = self.board.points.get(end_point)
+        opponent_color = 'black' if player_color == 'white' else 'white'
+        
+        if end_point_obj and end_point_obj.count() >= 2 and end_point_obj.top_color() == opponent_color:
+            return False 
+            
+        return True
+    
+    def can_bear_off(self, player_color: str) -> bool:
+        """Verifica si todas las fichas del jugador están en su cuadrante de casa."""
+        return self.board.count_checkers_outside_home(player_color) == 0
 
-if __name__ == "__main__":
-    game = BackgammonGame()
-    game.start_game()
-    game.make_move(0, 5, 5)
+    def check_game_over(self) -> tuple[bool, str]:
+        """Verifica si un jugador ha sacado todas sus fichas (15)."""
+        if len(self.board.off_board['white']) == 15:
+            self.is_game_over = True
+            return True, "white"
+        if len(self.board.off_board['black']) == 15:
+            self.is_game_over = True
+            return True, "black"
+        return False, ""
+
+    def get_valid_moves(self) -> list:
+        valid_moves = []
+        player_color = self.current_player.color
+        dice_values = self.dice.get_available_rolls() 
+        
+        is_bar_occupied = self.board_has_captured_checkers(player_color)
+        
+        if is_bar_occupied:
+            start_point = 0 if player_color == 'white' else 25
+            
+            for die_value in dice_values:
+                
+                if player_color == 'white':
+                    end_point = start_point + die_value
+                    if 1 <= end_point <= 6 and self.is_valid_reentry(player_color, end_point):
+                        valid_moves.append((start_point, end_point, die_value))
+                        
+                elif player_color == 'black':
+                    end_point = start_point - die_value
+                    if 19 <= end_point <= 24 and self.is_valid_reentry(player_color, end_point):
+                        valid_moves.append((start_point, end_point, die_value))
+            
+        else:
+            is_bear_off_possible = self.can_bear_off(player_color)
+
+            for start_point in range(1, 25):
+                point = self.board.points[start_point]
+                
+                if point.count() > 0 and point.top_color() == player_color:
+                    
+                    for die_value in dice_values:
+                        
+                        if player_color == 'white':
+                            end_point = start_point + die_value
+                            
+                            if end_point <= 24:
+                                end_point_obj = self.board.points[end_point]
+                                if end_point_obj.count() <= 1 or end_point_obj.top_color() == player_color:
+                                    valid_moves.append((start_point, end_point, die_value))
+                            
+                            elif is_bear_off_possible and start_point >= 19:
+                                distance_to_bear_off = 25 - start_point
+                                
+                                if die_value >= distance_to_bear_off:
+                                    
+                                    if distance_to_bear_off < die_value:
+                                        is_furthest = True
+                                        for p in range(19, start_point):
+                                            if self.board.points[p].count() > 0 and self.board.points[p].top_color() == player_color:
+                                                is_furthest = False
+                                                break
+                                        if is_furthest:
+                                            valid_moves.append((start_point, 25, die_value))
+                                    else:
+                                        valid_moves.append((start_point, 25, die_value))
+                                        
+                        elif player_color == 'black':
+                            end_point = start_point - die_value
+                            
+                            if end_point >= 1:
+                                end_point_obj = self.board.points[end_point]
+                                if end_point_obj.count() <= 1 or end_point_obj.top_color() == player_color:
+                                    valid_moves.append((start_point, end_point, die_value))
+
+                            elif is_bear_off_possible and start_point <= 6:
+                                distance_to_bear_off = start_point - 0
+                                
+                                if die_value >= distance_to_bear_off:
+                                    
+                                    if distance_to_bear_off < die_value:
+                                        is_furthest = True
+                                        for p in range(start_point + 1, 7):
+                                            if self.board.points[p].count() > 0 and self.board.points[p].top_color() == player_color:
+                                                is_furthest = False
+                                                break
+                                        if is_furthest:
+                                            valid_moves.append((start_point, 0, die_value))
+                                    else:
+                                        valid_moves.append((start_point, 0, die_value))
+
+        return self._remove_duplicate_moves(valid_moves)
+
+    def _remove_duplicate_moves(self, moves):
+        return list(set(moves))
+
+    def make_move(self, start_point: int, end_point: int, die_value: int) -> bool:
+        
+        if not self.is_valid_move(start_point, end_point, die_value):
+            return False
+
+        if end_point == 0 or end_point == 25:
+            checker_color = self.board.points[start_point].remove_checker()
+            self.board.off_board[checker_color].append(checker_color)
+        
+        elif start_point == 0 or start_point == 25:
+            checker_color = self.board.bar[self.current_player.color].pop()
+            
+            end = self.board.points[end_point]
+            if end.count() == 1 and end.top_color() != checker_color:
+                captured_color = end.remove_checker()
+                self.board.send_to_bar(captured_color)
+            end.add_checker(checker_color)
+
+        else:
+            start = self.board.points[start_point]
+            end = self.board.points[end_point]
+
+            if end.count() == 1 and end.top_color() != self.current_player.color:
+                captured_color = end.remove_checker()
+                self.board.send_to_bar(captured_color)
+
+            checker_color = start.remove_checker()
+            end.add_checker(checker_color)
+
+        success = self.dice.use_roll(die_value) 
+        return success
+    
+    def is_valid_move(self, start_point: int, end_point: int, die_value: int) -> bool:
+        valid_moves = self.get_valid_moves()
+        return (start_point, end_point, die_value) in valid_moves
