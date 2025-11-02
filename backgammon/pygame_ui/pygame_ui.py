@@ -4,7 +4,7 @@ import pygame
 from ..core.game import BackgammonGame
 
 WIDTH, HEIGHT = 1000, 700
-MARGIN_X, MARGIN_Y = 40, 40
+MARGIN_X, MARGIN_Y = 40, 15 
 BG_COLOR = (245, 239, 230)
 BOARD_COLOR = (230, 220, 200)
 TRI_A = (170, 120, 90)
@@ -24,18 +24,18 @@ MAX_VISIBLE_STACK = 5
 def render_ui_elements(surface, game, font):
     dice_values = game.dice.get_values()
     dice_x = WIDTH // 2 - 100
-    dice_y = MARGIN_Y + 10  
+    dice_y = 2 
 
     txt_turn = font.render(f"Turno de: {game.current_player.name} ({game.current_player.color.upper()})", True, TEXT)
-    surface.blit(txt_turn, (dice_x - 100, dice_y))
+    surface.blit(txt_turn, (MARGIN_X, dice_y)) 
 
     for i, die_val in enumerate(dice_values):
-        rect = pygame.Rect(dice_x + i * 50, dice_y + 30, 40, 40)
+        rect = pygame.Rect(dice_x + i * 50, dice_y + -7, 40, 40)
         pygame.draw.rect(surface, LINE, rect, 1)
         txt = font.render(str(die_val), True, TEXT)
         surface.blit(txt, txt.get_rect(center=rect.center))
 
-    end_turn_rect = pygame.Rect(WIDTH - MARGIN_X - 150, MARGIN_Y, 150, 40)
+    end_turn_rect = pygame.Rect(WIDTH - MARGIN_X - 150, 2, 150, 40)
     pygame.draw.rect(surface, (200, 50, 50), end_turn_rect, border_radius=5)
     txt_end = font.render("TERMINAR TURNO", True, WHITE)
     surface.blit(txt_end, txt_end.get_rect(center=end_turn_rect.center))
@@ -288,23 +288,23 @@ def main():
                                 if bar_color == game.current_player.color and is_reentry_required:
                                     selected_start_point = point_number
                                     game_state = STATE_SELECT_END
-                                    print(f"✅ BARRA de {bar_color.upper()} seleccionada como inicio.")
+                                    print(f"Correcto BARRA de {bar_color.upper()} seleccionada como inicio.")
                                 else:
-                                    print("❌ La barra no tiene tus fichas o no es obligatoria la reentrada.")
+                                    print("Incorrecto La barra no tiene tus fichas o no es obligatoria la reentrada.")
                                     
                             elif 1 <= point_number <= 24:
                                 
                                 if is_reentry_required:
-                                    print("❌ Debes mover las fichas de la barra (reentrada) primero.")
+                                    print("Incorrecto Debes mover las fichas de la barra (reentrada) primero.")
                                     continue
                                 
                                 point_obj = game.board.points[point_number]
                                 if point_obj.count() > 0 and point_obj.top_color() == game.current_player.color:
                                     selected_start_point = point_number
                                     game_state = STATE_SELECT_END
-                                    print(f"✅ Punto de inicio seleccionado: {selected_start_point}")
+                                    print(f"Correcto Punto de inicio seleccionado: {selected_start_point}")
                                 else:
-                                    print("❌ No es posible iniciar el movimiento desde aquí.")
+                                    print("Incorrecto No es posible iniciar el movimiento desde aquí.")
 
                         elif game_state == STATE_SELECT_END:
                             end_point = point_number
@@ -323,7 +323,7 @@ def main():
                                 move_successful = game.make_move(selected_start_point, end_point, die_used)
                                 
                                 if move_successful:
-                                    print(f"✅ Movimiento: {selected_start_point} -> {end_point} (usando {die_used})")
+                                    print(f"Correcto Movimiento: {selected_start_point} -> {end_point} (usando {die_used})")
                                     selected_start_point = None 
                                     
                                     if game.dice.rolls_left == 0:
@@ -331,9 +331,9 @@ def main():
                                     else:
                                         game_state = STATE_SELECT_START 
                                 else:
-                                    print("❌ Movimiento inválido (falló game.make_move).")
+                                    print("Incorrecto Movimiento inválido (falló game.make_move).")
                             else:
-                                print(f"❌ Movimiento inválido. El movimiento de {selected_start_point} a {end_point} no es legal con los dados restantes.")
+                                print(f"Inccorecto Movimiento inválido. El movimiento de {selected_start_point} a {end_point} no es legal con los dados restantes.")
 
                             if not move_successful:
                                 selected_start_point = None
