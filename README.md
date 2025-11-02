@@ -15,9 +15,9 @@ En este trabajo Final, desarrolamos una aplicacion que permite jugar partidas de
 - La dispociocion de las carpetas con las aplicaciones y funciones del juego.
 
 # Características
-- Juego Básico: Permite a dos jugadores lanzar dados, mover fichas y capturar fichas del oponente, enviándolas a la barra.
-- Tirada de Inicio: Determina aleatoriamente qué jugador comienza el juego lanzando un dado cada uno.
-- Movimientos de Fichas: Valida los movimientos para asegurar que las fichas se mueven según las reglas del Backgammon, incluida la captura de fichas.
+- Juego Básico: Permite a dos jugadores lanzar dados, mover fichas y capturar fichas del oponente, enviándolas a la barra de en medio del tablero.
+- Tirada de Inicio: Determina aleatoriamente cuantos espacios pueden moverses los dos jugadores al comenzar el juego, lanzando dos dados cada uno.
+- Movimientos de Fichas: Valida los movimientos para asegurar que las fichas se mueven según las reglas del Backgammon, incluida la captura de fichas y el final del juego cuando uno de los jugadores saca todas sus fichas y las coloca en la barra de afuera del tablero.
 - Dados: Simulación de dos dados. En caso de que los valores sean iguales (dobles), se otorgan 4 movimientos.
 
 # Estructura del Proyecto

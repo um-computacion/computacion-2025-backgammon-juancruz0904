@@ -65,3 +65,5 @@
 # 30/10/25 - Correcciones de las funciones del game.py, board.py y pygame_ui.py
 
 # 31/10/25 - Correcciones de las funciones del game.py, board.py, dice.py y pygame_ui.py
+
+# 01/11/25 - Correcciones de los turnos en el game.py y las posiociones del boton, los valores del dado y el texto del player en pygame_ui.py
